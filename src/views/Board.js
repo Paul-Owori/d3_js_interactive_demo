@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import * as d3 from "d3";
 
 // Data
@@ -6,6 +6,9 @@ import generalMetadata from "./../assets/datasets/metadata.json";
 import generalHeaders from "./../assets/datasets/headers.json";
 import lphMetadata from "./../assets/datasets/orgUnits/lph_metadata.json";
 import lphHeaders from "./../assets/datasets/orgUnits/lph_headers.json";
+
+// Assets
+import Colors from "./../assets/colors/colors";
 
 // Hooks
 import useWindowDimensions from "./../hooks/windowDimensions";
@@ -32,9 +35,27 @@ const Board = () => {
     const [btnSize, setBtnSize] = useState(30);
     const [marginSize, setMarginSize] = useState(20);
     const { height, width } = useWindowDimensions();
-    const datasetBar = [5, 10, 13, 19, 21, 25, 11, 25, 22, 18, 7];
+    const [datasetBar, setDatasetBar] = useState([
+        5,
+        10,
+        13,
+        19,
+        21,
+        25,
+        11,
+        25,
+        22,
+        18,
+        7,
+    ]);
+    const [lphData, setLphData] = useState("");
 
-    const datasetLine = [
+    const [xLegendVals, setXLegendVals] = useState("");
+    const [miniXLegendVals, setMiniXLegendVals] = useState("");
+    const [kPIVals, setKPIVals] = useState("");
+    const [miniKPIVals, setMiniKPIVals] = useState("");
+
+    const [datasetLine, setDatasetLine] = useState([
         { month: 10, sales: 100 },
         { month: 20, sales: 130 },
         { month: 30, sales: 250 },
@@ -45,14 +66,44 @@ const Board = () => {
         { month: 80, sales: 120 },
         { month: 90, sales: 145 },
         { month: 100, sales: 130 },
-    ];
+    ]);
+
     const chartWidth = 0.55 * width;
     const chartHeight = 0.55 * height;
 
     // const chartWidth = 400;
     // const chartHeight = 300;
+    const extractDatasets = (metaInput, headers) => {
+        // X Values and Key Performance Indicators
+        const dimensions = metaInput.metaData.dimensions;
+        const xLegendValues = dimensions.pe;
+        const kPIValues = dimensions.dx;
+        let finalX = [];
+        let finalKPI = [];
+        xLegendValues.forEach((val) => {
+            finalX.push(metaInput.metaData.items[val]);
+        });
 
-    console.log("LPH metadata is", lphMetadata);
+        kPIValues.forEach((val) => {
+            finalKPI.push(metaInput.metaData.items[val]);
+        });
+
+        // Actual data values
+        const dataSets = headers.rows;
+
+        // return{xLegendValues, kPIValues}
+        logData(dataSets);
+    };
+
+    // Create the datasets
+    useEffect(() => {
+        extractDatasets(lphMetadata, lphHeaders);
+        return () => {};
+    }, []);
+
+    const logData = (data) => {
+        console.log("LPH metadata is", data);
+    };
 
     return (
         <div style={styles.boardContainer}>
@@ -99,6 +150,7 @@ const Board = () => {
                             icon={iconName}
                             bw={active !== iconName}
                             onClick={() => {
+                                // logData();
                                 setActive(iconName);
                             }}
                         />

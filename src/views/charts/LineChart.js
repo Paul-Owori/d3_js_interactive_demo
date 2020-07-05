@@ -82,14 +82,6 @@ const LineChart = ({ chartWidth, chartHeight, dataset }) => {
 
                 // value below the bar
                 y: (data, index) => {
-                    console.log(
-                        `Data is {sales:${data.sales}, month:${
-                            data.month
-                        }} max is ${canvasHeight}, Scale X is ${scaleY(
-                            data.sales
-                        )}\n\n`
-                    );
-
                     return scaleY(data.sales);
                 },
                 "font-size": 20,

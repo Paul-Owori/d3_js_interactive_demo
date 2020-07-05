@@ -96,7 +96,7 @@ const IconBtn = ({ icon, size, altStyles, bw, darkBg, onClick, margin }) => {
                 width: size + 0.7 * size,
                 height: size + 0.7 * size,
                 background: bw ? "#dfe1e6" : "#000",
-                border: !bw ? "3px solid #fff" : "3px solid #dfe1e6",
+                border: !bw ? "3px solid #fff" : "3px solid #000",
                 display: "flex",
                 alignContent: "center",
                 justifyContent: "center",
