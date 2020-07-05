@@ -1,0 +1,347 @@
+{
+    "metaData": {
+        "items": {
+            "201907": {
+                "uid": "201907",
+                "code": "201907",
+                "name": "July 2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-07-01T00:00:00.000",
+                "endDate": "2019-07-31T00:00:00.000"
+            },
+            "201908": {
+                "uid": "201908",
+                "code": "201908",
+                "name": "August 2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-08-01T00:00:00.000",
+                "endDate": "2019-08-31T00:00:00.000"
+            },
+            "201909": {
+                "uid": "201909",
+                "code": "201909",
+                "name": "September 2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-09-01T00:00:00.000",
+                "endDate": "2019-09-30T00:00:00.000"
+            },
+            "201910": {
+                "uid": "201910",
+                "code": "201910",
+                "name": "October 2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-10-01T00:00:00.000",
+                "endDate": "2019-10-31T00:00:00.000"
+            },
+            "201911": {
+                "uid": "201911",
+                "code": "201911",
+                "name": "November 2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-11-01T00:00:00.000",
+                "endDate": "2019-11-30T00:00:00.000"
+            },
+            "201912": {
+                "uid": "201912",
+                "code": "201912",
+                "name": "December 2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-12-01T00:00:00.000",
+                "endDate": "2019-12-31T00:00:00.000"
+            },
+            "202001": {
+                "uid": "202001",
+                "code": "202001",
+                "name": "January 2020",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2020-01-01T00:00:00.000",
+                "endDate": "2020-01-31T00:00:00.000"
+            },
+            "202002": {
+                "uid": "202002",
+                "code": "202002",
+                "name": "February 2020",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2020-02-01T00:00:00.000",
+                "endDate": "2020-02-29T00:00:00.000"
+            },
+            "202003": {
+                "uid": "202003",
+                "code": "202003",
+                "name": "March 2020",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2020-03-01T00:00:00.000",
+                "endDate": "2020-03-31T00:00:00.000"
+            },
+            "202004": {
+                "uid": "202004",
+                "code": "202004",
+                "name": "April 2020",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2020-04-01T00:00:00.000",
+                "endDate": "2020-04-30T00:00:00.000"
+            },
+            "202005": {
+                "uid": "202005",
+                "code": "202005",
+                "name": "May 2020",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2020-05-01T00:00:00.000",
+                "endDate": "2020-05-31T00:00:00.000"
+            },
+            "202006": {
+                "uid": "202006",
+                "code": "202006",
+                "name": "June 2020",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2020-06-01T00:00:00.000",
+                "endDate": "2020-06-30T00:00:00.000"
+            },
+            "ooYhW4ODAYv": {
+                "uid": "ooYhW4ODAYv",
+                "name": "EPI: OPV 1st dose",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "ZEhoA0yPhV1": {
+                "uid": "ZEhoA0yPhV1",
+                "name": "EPI: MR 2",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "k2RAiVthXEP": {
+                "uid": "k2RAiVthXEP",
+                "name": "EPI: PCV13 3rd dose",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "WSNfJ3VPs3p": {
+                "uid": "WSNfJ3VPs3p",
+                "name": "EPI: HPV2",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "x7PSH9k9Dza": {
+                "uid": "x7PSH9k9Dza",
+                "name": "EPI: HPV3",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "rzlEKYiwPRS": {
+                "uid": "rzlEKYiwPRS",
+                "name": "EPI: HPV1",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "yGJ5MgltneW": {
+                "uid": "yGJ5MgltneW",
+                "name": "EPI: Rotavirus 1",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "LAST_12_MONTHS": {
+                "name": "Last 12 months"
+            },
+            "dx": {
+                "uid": "dx",
+                "name": "Data",
+                "dimensionType": "DATA_X"
+            },
+            "KFxe5Rofj17": {
+                "uid": "KFxe5Rofj17",
+                "name": "EPI: DPT-HepB-Hib 2nd dose ",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "kuB6OGQgEpV": {
+                "uid": "kuB6OGQgEpV",
+                "name": "EPI: PCV13 1st dose ",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "yxJOHrb5w01": {
+                "uid": "yxJOHrb5w01",
+                "name": "EPI: DPT-HepB-Hib 3rd dose",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "Dhh6lMhJaC9": {
+                "uid": "Dhh6lMhJaC9",
+                "name": "EPI: MR 1",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "ou": {
+                "uid": "ou",
+                "name": "Organisation unit",
+                "dimensionType": "ORGANISATION_UNIT"
+            },
+            "fbFDlQjutwN": {
+                "uid": "fbFDlQjutwN",
+                "code": "13-2-02",
+                "name": "Letlhakane Primary Hospital",
+                "dimensionItemType": "ORGANISATION_UNIT",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "BVvAOWri9Qq": {
+                "uid": "BVvAOWri9Qq",
+                "name": "EPI: BCG at Birth",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "PZxElfcr9yl": {
+                "uid": "PZxElfcr9yl",
+                "name": "EPI: OPV 2nd dose",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "ilFqwent8Vo": {
+                "uid": "ilFqwent8Vo",
+                "name": "EPI: OPV 3rd dose",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "aP6hYxjMawv": {
+                "uid": "aP6hYxjMawv",
+                "name": "EPI: DPT-HepB-Hib 1st dose ",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "f7yMr7SdUuC": {
+                "uid": "f7yMr7SdUuC",
+                "name": "EPI: Rotavirus ",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "TsJSFYSXBD6": {
+                "uid": "TsJSFYSXBD6",
+                "name": "EPI: BCG at CWC Visit ",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "JOq6W8BNFkV": {
+                "uid": "JOq6W8BNFkV",
+                "name": "EPI: Hep B At Birth",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            },
+            "pe": {
+                "uid": "pe",
+                "name": "Period",
+                "dimensionType": "PERIOD"
+            },
+            "qsQsHpxspmY": {
+                "uid": "qsQsHpxspmY",
+                "name": "EPI: PCV13 2nd dose",
+                "dimensionItemType": "PROGRAM_INDICATOR",
+                "valueType": "NUMBER",
+                "aggregationType": "COUNT",
+                "totalAggregationType": "SUM"
+            }
+        },
+        "dimensions": {
+            "dx": [
+                "BVvAOWri9Qq",
+                "TsJSFYSXBD6",
+                "aP6hYxjMawv",
+                "KFxe5Rofj17",
+                "yxJOHrb5w01",
+                "rzlEKYiwPRS",
+                "WSNfJ3VPs3p",
+                "x7PSH9k9Dza",
+                "JOq6W8BNFkV",
+                "Dhh6lMhJaC9",
+                "ZEhoA0yPhV1",
+                "ooYhW4ODAYv",
+                "PZxElfcr9yl",
+                "ilFqwent8Vo",
+                "kuB6OGQgEpV",
+                "qsQsHpxspmY",
+                "k2RAiVthXEP",
+                "f7yMr7SdUuC",
+                "yGJ5MgltneW"
+            ],
+            "pe": [
+                "201907",
+                "201908",
+                "201909",
+                "201910",
+                "201911",
+                "201912",
+                "202001",
+                "202002",
+                "202003",
+                "202004",
+                "202005",
+                "202006"
+            ],
+            "ou": ["fbFDlQjutwN"],
+            "co": []
+        }
+    },
+    "width": 0,
+    "rows": [],
+    "height": 0,
+    "headerWidth": 0
+}

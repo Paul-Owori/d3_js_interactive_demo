@@ -1,0 +1,267 @@
+[
+    {
+        "name": "Administrative Unit",
+        "id": "voKoskRZJVy",
+        "displayName": "Administrative Unit"
+    },
+    {
+        "name": "Central District Council",
+        "id": "tP674ERW1ik",
+        "displayName": "Central District Council"
+    },
+    {
+        "name": "Chobe District Council",
+        "id": "VQveFIPDcRz",
+        "displayName": "Chobe District Council"
+    },
+    {
+        "name": "City of Francistown",
+        "id": "X6m2jpmS07U",
+        "displayName": "City of Francistown"
+    },
+    {
+        "name": "Clinic",
+        "id": "XtNngRivEXY",
+        "displayName": "Clinic"
+    },
+    {
+        "name": "College",
+        "id": "GvR6LwQ42Gq",
+        "displayName": "College"
+    },
+    {
+        "name": "Dental Clinic",
+        "id": "KOz0txpRFwj",
+        "displayName": "Dental Clinic"
+    },
+    {
+        "name": "Dentist",
+        "id": "cpgwSE5gUfa",
+        "displayName": "Dentist"
+    },
+    {
+        "name": "District",
+        "id": "ugdHe6z9vhi",
+        "displayName": "District"
+    },
+    {
+        "name": "District Health Team",
+        "id": "PqDM0uXvB4F",
+        "displayName": "District Health Team"
+    },
+    {
+        "name": "Education",
+        "id": "lPYcWN0ETHi",
+        "displayName": "Education"
+    },
+    {
+        "name": "Gaborone City Council",
+        "id": "ZMqSniW8fug",
+        "displayName": "Gaborone City Council"
+    },
+    {
+        "name": "General Practitioner",
+        "id": "C92XecnH8aY",
+        "displayName": "General Practitioner"
+    },
+    {
+        "name": "Ghanzi District",
+        "id": "UflEsziqtwL",
+        "displayName": "Ghanzi District"
+    },
+    {
+        "name": "Health Post",
+        "id": "Bq8oJG8ssAu",
+        "displayName": "Health Post"
+    },
+    {
+        "name": "Hospital",
+        "id": "BsYxo2N0pBw",
+        "displayName": "Hospital"
+    },
+    {
+        "name": "Institute of Health Sciences",
+        "id": "msOiRamCMJ2",
+        "displayName": "Institute of Health Sciences"
+    },
+    {
+        "name": "Jwaneng Town",
+        "id": "zmSjZJ5tWuO",
+        "displayName": "Jwaneng Town"
+    },
+    {
+        "name": "Kgalagadi District",
+        "id": "SixwBZ82IVt",
+        "displayName": "Kgalagadi District"
+    },
+    {
+        "name": "Kgatleng District",
+        "id": "cfV2HRrB3dx",
+        "displayName": "Kgatleng District"
+    },
+    {
+        "name": "Kweneng District",
+        "id": "AI0lbjBqRNn",
+        "displayName": "Kweneng District"
+    },
+    {
+        "name": "Laboratory - Blood gases",
+        "id": "haEb3fPpToJ",
+        "displayName": "Laboratory - Blood gases"
+    },
+    {
+        "name": "Laboratory -CD4",
+        "id": "mNebuqFkT6X",
+        "displayName": "Laboratory -CD4"
+    },
+    {
+        "name": "Laboratory- (Heam/Chem/CD4/Coagulation)",
+        "id": "zSo5JBaBwJq",
+        "displayName": "Laboratory- (Heam/Chem/CD4/Coagulation)"
+    },
+    {
+        "name": "Laboratory - HIV ELISA",
+        "id": "dqRYUm3WoDB",
+        "displayName": "Laboratory - HIV ELISA"
+    },
+    {
+        "name": "Laboratory - Hormones",
+        "id": "VZwvZuIAvUr",
+        "displayName": "Laboratory - Hormones"
+    },
+    {
+        "name": "Laboratory - Tb Culture",
+        "id": "KWVZldOUxe7",
+        "displayName": "Laboratory - Tb Culture"
+    },
+    {
+        "name": "Laboratory - Viral Load",
+        "id": "aLsYrFEKRBq",
+        "displayName": "Laboratory - Viral Load"
+    },
+    {
+        "name": "Lobatse Town",
+        "id": "ubYwYr5VaJo",
+        "displayName": "Lobatse Town"
+    },
+    {
+        "name": "Management Team",
+        "id": "Lu7FJAeITmB",
+        "displayName": "Management Team"
+    },
+    {
+        "name": "Medical Centre",
+        "id": "B8PkEMsxDtR",
+        "displayName": "Medical Centre"
+    },
+    {
+        "name": "Ministry",
+        "id": "HExO3WhwOzP",
+        "displayName": "Ministry"
+    },
+    {
+        "name": "Ministry Unit",
+        "id": "H6t1msguwHN",
+        "displayName": "Ministry Unit"
+    },
+    {
+        "name": "Mission Facility",
+        "id": "DFSZSubyxvW",
+        "displayName": "Mission Facility"
+    },
+    {
+        "name": "Mobile Stop",
+        "id": "r3XeDjPlpoF",
+        "displayName": "Mobile Stop"
+    },
+    {
+        "name": "North East District",
+        "id": "JKajtU8CXSC",
+        "displayName": "North East District"
+    },
+    {
+        "name": "North West District",
+        "id": "NvdcdcLYrji",
+        "displayName": "North West District"
+    },
+    {
+        "name": "Optician",
+        "id": "ubNaixRoRRB",
+        "displayName": "Optician"
+    },
+    {
+        "name": "Oral Health Service",
+        "id": "xsDY9heTAlh",
+        "displayName": "Oral Health Service"
+    },
+    {
+        "name": "Paediatrician",
+        "id": "b3MkbOez0Iw",
+        "displayName": "Paediatrician"
+    },
+    {
+        "name": "Peri-Urban",
+        "id": "D7vNvj3Ejmx",
+        "displayName": "Peri-Urban"
+    },
+    {
+        "name": "Physiotherapy",
+        "id": "VWItf3cMTi7",
+        "displayName": "Physiotherapy"
+    },
+    {
+        "name": "Primary Hospital",
+        "id": "F2ygDo3udBr",
+        "displayName": "Primary Hospital"
+    },
+    {
+        "name": "Private Facility",
+        "id": "CAGW80RwBTj",
+        "displayName": "Private Facility"
+    },
+    {
+        "name": "Public Facility",
+        "id": "mTx87LVjQQO",
+        "displayName": "Public Facility"
+    },
+    {
+        "name": "Public Research Unit",
+        "id": "Exf9RMBtbck",
+        "displayName": "Public Research Unit"
+    },
+    {
+        "name": "Referral Hospital",
+        "id": "WfO3iPR4Fzj",
+        "displayName": "Referral Hospital"
+    },
+    {
+        "name": "Rural",
+        "id": "NPNmwHqjWrZ",
+        "displayName": "Rural"
+    },
+    {
+        "name": "Selibe Phikwe Town",
+        "id": "jGmi0kFMBT3",
+        "displayName": "Selibe Phikwe Town"
+    },
+    {
+        "name": "South East District",
+        "id": "V53RYlkr5wG",
+        "displayName": "South East District"
+    },
+    {
+        "name": "Southren District Council",
+        "id": "ice9gJDwpzs",
+        "displayName": "Southren District Council"
+    },
+    {
+        "name": "Sowa Town",
+        "id": "txE9jgegD9q",
+        "displayName": "Sowa Town"
+    },
+    {
+        "name": "Urban",
+        "id": "KTjfg4GXdPo",
+        "displayName": "Urban"
+    }
+]

@@ -1,0 +1,28 @@
+{
+    "organisationUnitLevels": [
+        {
+            "level": 3,
+            "name": "Facility",
+            "id": "TJDSC3zWxWz",
+            "displayName": "Facility"
+        },
+        {
+            "level": 2,
+            "name": "Health District",
+            "id": "jUxn92TUccj",
+            "displayName": "Health District"
+        },
+        {
+            "level": 4,
+            "name": "Mobile Stop",
+            "id": "stEhzGn8cI4",
+            "displayName": "Mobile Stop"
+        },
+        {
+            "level": 1,
+            "name": "National",
+            "id": "L1eqN4kIy7H",
+            "displayName": "National"
+        }
+    ]
+}

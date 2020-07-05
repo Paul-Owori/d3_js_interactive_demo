@@ -1,0 +1,8 @@
+.icon-btn:hover {
+    box-shadow: 1px 1px 2px 5px #4d4c4c;
+}
+
+.icon-btn:active,
+.icon-btn:focus {
+    box-shadow: 2px 2px 2px 8px #4d4c4c;
+}

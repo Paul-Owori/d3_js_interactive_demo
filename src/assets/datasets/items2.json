@@ -1,0 +1,28 @@
+{
+    "items": [
+        {
+            "id": "voKoskRZJVy",
+            "name": "Administrative Unit"
+        },
+        {
+            "id": "lPYcWN0ETHi",
+            "name": "Education"
+        },
+        {
+            "id": "Lu7FJAeITmB",
+            "name": "Management Team"
+        },
+        {
+            "id": "DFSZSubyxvW",
+            "name": "Mission Facility"
+        },
+        {
+            "id": "CAGW80RwBTj",
+            "name": "Private Facility"
+        },
+        {
+            "id": "mTx87LVjQQO",
+            "name": "Public Facility"
+        }
+    ]
+}
