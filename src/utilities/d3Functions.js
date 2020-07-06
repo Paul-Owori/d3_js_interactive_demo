@@ -23,9 +23,10 @@ export const getMin = (dataSet, column) => {
 // Column is string
 export const getMax = (dataSet, column) => {
     let maxValue;
-
+    console.log("Dataset is", dataSet, "\nColumn is ", column);
     if (column) {
         maxValue = d3.max(dataSet, (datasetObj) => {
+            console.log("dataset obj returned is", datasetObj);
             return datasetObj[column];
         });
     } else {
@@ -93,6 +94,7 @@ export const scaleX = (dataSet, column, maxWidth, allowance) => {
 // maxHeight is the maximum available height for the svg
 export const scaleY = (dataSet, column, maxHeight, allowance) => {
     let maxValue = getMax(dataSet, column);
+    console.log("Max val is", maxValue);
     let minValue = 0;
     if (allowance) {
         minValue -= allowance;
@@ -113,5 +115,86 @@ export const scaleY = (dataSet, column, maxHeight, allowance) => {
     }
 
     // Returns a scaling function that you can now feed values and it will place them safely within the range
+    return scale;
+};
+
+// Dataset is an array
+// Column is string
+export const getMinArr = (dataSet, column) => {
+    let minValue;
+    if (column) {
+        // d3.min();
+        minValue = d3.min(dataSet, (datasetObj) => {
+            return datasetObj[column];
+        });
+    } else {
+        // d3.min();
+        minValue = d3.min(dataSet, (datasetObj) => {
+            return datasetObj;
+        });
+    }
+
+    return minValue;
+};
+
+// Dataset is an array of arrays
+// Column is number (index of the values being checked)
+export const getMaxArr = (dataSet, column) => {
+    const maxValue = d3.max(dataSet, (datasetObj) => {
+        // Get the max in the nested array
+
+        const nestedMax = d3.max(datasetObj, (nestedArray) => {
+            // console.log("nestedCOl is", nestedArray[column]);
+            return parseInt(nestedArray[column]);
+        });
+
+        // console.log(
+        //     "Dataset object is",
+        //     datasetObj,
+        //     "\n and its nested max is",
+        //     nestedMax
+        // );
+        return nestedMax;
+    });
+
+    return maxValue;
+};
+
+// Dataset is an array of arrays
+// Column is number (index of the values being checked)
+// maxHeight is the maximum available height for the svg
+export const scaleYArr = (dataSet, column, maxHeight, allowance) => {
+    let maxValue = getMaxArr(dataSet, column);
+    console.log("Max value is", maxValue);
+    let minValue = 0;
+    if (allowance) {
+        minValue -= allowance;
+        maxValue += allowance;
+    }
+
+    // console.log("Range is", [maxHeight, 0]);
+    // console.log("Domain is", [minValue, maxValue]);
+
+    // const altVal = (val) => {
+    //     return (val / maxValue) * (maxHeight / maxValue) * maxValue;
+    // };
+
+    let scale;
+    if (allowance) {
+        console.log("There is allowance of", allowance);
+        scale = d3
+            .scaleLinear()
+            .domain([minValue, maxValue]) // The min and max values provided for something
+            .range([maxHeight - allowance, allowance]); // The space available e.g [0, 400]
+    } else {
+        console.log("No allowance");
+        scale = d3
+            .scaleLinear()
+            .domain([minValue, maxValue]) // The min and max values provided for something
+            .range([0, maxHeight]); // The space available e.g [0, 400]
+    }
+
+    // Returns a scaling function that you can now feed values and it will place them safely within the range
+    // return altVal;
     return scale;
 };

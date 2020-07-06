@@ -6,6 +6,8 @@ import generalMetadata from "./../assets/datasets/metadata.json";
 import generalHeaders from "./../assets/datasets/headers.json";
 import lphMetadata from "./../assets/datasets/orgUnits/lph_metadata.json";
 import lphHeaders from "./../assets/datasets/orgUnits/lph_headers.json";
+import mtshHeaders from "./../assets/datasets/orgUnits/mtsh_headers.json";
+import mtshMetadata from "./../assets/datasets/orgUnits/mtsh_metadata.json";
 
 // Assets
 import Colors from "./../assets/colors/colors";
@@ -49,11 +51,8 @@ const Board = () => {
         7,
     ]);
     const [lphData, setLphData] = useState("");
-
-    const [xLegendVals, setXLegendVals] = useState("");
-    const [miniXLegendVals, setMiniXLegendVals] = useState("");
-    const [kPIVals, setKPIVals] = useState("");
-    const [miniKPIVals, setMiniKPIVals] = useState("");
+    const [mtshData, setMtshData] = useState("");
+    const [generalData, setGeneralData] = useState("");
 
     const [datasetLine, setDatasetLine] = useState([
         { month: 10, sales: 100 },
@@ -68,19 +67,17 @@ const Board = () => {
         { month: 100, sales: 130 },
     ]);
 
-    const chartWidth = 0.55 * width;
-    const chartHeight = 0.55 * height;
+    const chartWidth = 0.7 * width;
+    const chartHeight = 0.7 * height;
 
-    // const chartWidth = 400;
-    // const chartHeight = 300;
     const extractDatasets = (metaInput, headers) => {
         // X Values and Key Performance Indicators
         const dimensions = metaInput.metaData.dimensions;
-        const xLegendValues = dimensions.pe;
+        const months = dimensions.pe;
         const kPIValues = dimensions.dx;
         let finalX = [];
         let finalKPI = [];
-        xLegendValues.forEach((val) => {
+        months.forEach((val) => {
             finalX.push(metaInput.metaData.items[val]);
         });
 
@@ -91,19 +88,30 @@ const Board = () => {
         // Actual data values
         const dataSets = headers.rows;
 
-        // return{xLegendValues, kPIValues}
-        logData(dataSets);
+        // console.log("Months are ", finalX); // the uid and also the actual name of the month
+
+        // console.log("dataSets are ", dataSets); // The weird id, the month id and the value for the graph
+
+        //console.log("kPIValues are", finalKPI);  // the weird id and the name of the key performance indicator
+
+        const singleBarChartWidth = chartWidth / finalX.length; // Subtract padding
+        return {
+            months: finalX,
+            kPIValues: finalKPI,
+            dataSets,
+            uids: kPIValues,
+            colors: Colors,
+        };
     };
 
     // Create the datasets
     useEffect(() => {
-        extractDatasets(lphMetadata, lphHeaders);
+        setLphData(extractDatasets(lphMetadata, lphHeaders));
+        setMtshData(extractDatasets(mtshMetadata, mtshHeaders));
+        setGeneralData(extractDatasets(generalMetadata, generalHeaders));
+
         return () => {};
     }, []);
-
-    const logData = (data) => {
-        console.log("LPH metadata is", data);
-    };
 
     return (
         <div style={styles.boardContainer}>
@@ -113,10 +121,9 @@ const Board = () => {
                 <div style={styles.chartWrapper}>
                     <h5 style={styles.titles}>Chart</h5>
                     {active === "bar_graph_pretty"
-                        ? datasetBar &&
-                          datasetBar.length && (
+                        ? generalData && (
                               <BarChart
-                                  dataset={datasetBar}
+                                  dataset={generalData}
                                   chartWidth={chartWidth}
                                   chartHeight={chartHeight}
                               />
