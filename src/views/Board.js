@@ -21,6 +21,8 @@ import IconBtn from "./../components/IconBtn";
 // Charts
 import LineChart from "./charts/LineChart";
 import BarChart from "./charts/BarChart";
+import PieChart from "./charts/PieChart";
+import BarChartMonthly from "./charts/BarChartMonthly";
 
 const Board = () => {
     const btn = useRef(null);
@@ -33,9 +35,11 @@ const Board = () => {
         "scatter",
         "graph_and_plot",
     ];
+
     const [active, setActive] = useState(usableIcons[0]);
     const [btnSize, setBtnSize] = useState(30);
     const [marginSize, setMarginSize] = useState(20);
+    const [monthCode, setMonthCode] = useState("");
     const { height, width } = useWindowDimensions();
     const [datasetBar, setDatasetBar] = useState([
         5,
@@ -67,8 +71,11 @@ const Board = () => {
         { month: 100, sales: 130 },
     ]);
 
-    const chartWidth = 0.7 * width;
-    const chartHeight = 0.7 * height;
+    const chartWidth = 0.6 * width;
+    const chartHeight = 0.4 * height;
+
+    const miniChartWidth = 0.5 * chartWidth;
+    const miniChartHeight = 0.4 * height;
 
     const extractDatasets = (metaInput, headers) => {
         // X Values and Key Performance Indicators
@@ -113,41 +120,77 @@ const Board = () => {
         return () => {};
     }, []);
 
+    const changeMonthCode = (code) => {
+        console.log("Code received is", code);
+        setMonthCode(code);
+    };
+
     return (
         <div style={styles.boardContainer}>
-            {/* Chart & KPI */}
-            <div style={styles.chartContainer}>
-                {/* Chart */}
-                <div style={styles.chartWrapper}>
-                    <h5 style={styles.titles}>Chart</h5>
-                    {active === "bar_graph_pretty"
-                        ? generalData && (
-                              <BarChart
-                                  dataset={generalData}
-                                  chartWidth={chartWidth}
-                                  chartHeight={chartHeight}
-                              />
-                          )
-                        : active === "line_plot"
-                        ? datasetLine &&
-                          datasetLine.length && (
-                              <LineChart
-                                  dataset={datasetLine}
-                                  chartWidth={chartWidth}
-                                  chartHeight={chartHeight}
-                              />
-                          )
-                        : ""}
+            {/* LEFT */}
+            <div style={styles.leftBoard}>
+                <div
+                    style={{ ...styles.leftTop, ...styles.topPartition }}
+                ></div>
+                <div style={styles.middlePartition}>
+                    {/* Chart Main */}
+                    <div style={styles.chartWrapper}>
+                        {/* <h5 style={styles.titles}>Chart</h5> */}
+                        {/* active === "bar_graph_pretty"
+                            ? */}
+                        {generalData && (
+                            <BarChart
+                                dataset={generalData}
+                                chartWidth={chartWidth}
+                                chartHeight={chartHeight}
+                                monthCode={monthCode}
+                                setMonthCode={setMonthCode}
+                            />
+                        )}
+                    </div>
                 </div>
-
-                {/* KPI */}
-                <div style={styles.kpiWrapper}>
-                    <h5 style={styles.titles}>KPI</h5>
+                <div style={styles.bottomPartition}>
+                    <div style={styles.bottomPartLeft}>
+                        {generalData && monthCode && (
+                            <PieChart
+                                dataset={generalData}
+                                chartWidth={miniChartWidth}
+                                chartHeight={miniChartHeight}
+                                monthCode={monthCode}
+                            />
+                        )}
+                    </div>
+                    <div style={styles.bottomPartRight}>
+                        {generalData && monthCode && (
+                            <BarChartMonthly
+                                dataset={generalData}
+                                chartWidth={miniChartWidth}
+                                chartHeight={miniChartHeight}
+                                monthCode={monthCode}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
 
+            {/* RIGHT */}
+            <div style={styles.rightBoard}>
+                <div
+                    style={{ ...styles.rightTop, ...styles.topPartition }}
+                ></div>
+                <div style={styles.mapPartition}></div>
+            </div>
+            {/* Chart & KPI */}
+            {/* <div style={styles.chartContainer}>
+               
+
+                <div style={styles.kpiWrapper}>
+                    <h5 style={styles.titles}>KPI</h5>
+                </div>
+            </div> */}
+
             {/* Icons */}
-            <div style={styles.btnContainer}>
+            {/* <div style={styles.btnContainer}>
                 {usableIcons.map((iconName) => {
                     return (
                         <IconBtn
@@ -163,22 +206,66 @@ const Board = () => {
                         />
                     );
                 })}
-            </div>
+            </div> */}
         </div>
     );
 };
-
+const dark = false;
+const themeColor = dark ? "#fff" : "#1a1b1d";
+const borderThickness = "2.5px";
 const styles = {
     boardContainer: {
         display: "flex",
         flexDirection: "row",
-        width: "90vw",
-        height: "90vh",
+        width: "95vw",
+        height: "95vh",
         margin: "auto auto auto auto",
     },
-    btnContainer: {
-        flex: 3,
-        borderLeft: "2px solid #fff",
+
+    leftBoard: {
+        // border: `${borderThickness} solid ${themeColor}`,
+        borderRight: `${borderThickness} solid ${themeColor}`,
+        flex: 8,
+        display: "flex",
+        flexDirection: "column",
+    },
+    rightBoard: {
+        // borderRight: `${borderThickness} solid ${themeColor}`,
+        // borderTop: `${borderThickness} solid ${themeColor}`,
+        // borderBottom: `${borderThickness} solid ${themeColor}`,
+        flex: 4,
+        display: "flex",
+        flexDirection: "column",
+    },
+    topPartition: {
+        flex: 2,
+        borderBottom: `${borderThickness} solid ${themeColor}`,
+    },
+    middlePartition: {
+        flex: 5,
+        borderBottom: `${borderThickness} solid ${themeColor}`,
+    },
+    bottomPartition: {
+        flex: 5,
+        display: "flex",
+    },
+    bottomPartLeft: {
+        borderRight: `${borderThickness} solid ${themeColor}`,
+        flex: 6,
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "center",
+        justifyContent: "flex-end",
+    },
+    bottomPartRight: {
+        flex: 6,
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "center",
+        justifyContent: "flex-end",
+    },
+    mapPartition: {
+        flex: 10,
     },
     chartContainer: {
         flex: 9,
@@ -186,7 +273,7 @@ const styles = {
         flexDirection: "column",
     },
     chartWrapper: {
-        border: "1px solid #fff",
+        // border: "2px solid #000",
         flex: 9,
         padding: 10,
     },

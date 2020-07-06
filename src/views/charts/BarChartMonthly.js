@@ -3,15 +3,9 @@ import "d3-selection-multi";
 import * as d3 from "d3";
 import * as d3Functions from "./../../utilities/d3Functions";
 
-const Labels = ({
-    chartWidth,
-    chartHeight,
-    dataset,
-    monthCode,
-    setMonthCode,
-}) => {
+const Labels = ({ chartWidth, chartHeight, dataset, monthCode }) => {
     const barChartRef = useRef(null);
-    const scaleAllowance = 0;
+    const scaleAllowance = 1;
     const [sortedData, setSortedData] = useState("");
 
     // Svg
@@ -30,8 +24,13 @@ const Labels = ({
     };
 
     const getMonthData = (code) => {
-        // console.log("Code is", code);
+        // console.log(
+        //     `Getting months data for month ${code} from:`,
+        //     dataset.dataSets
+        // );
         const info = dataset.dataSets.filter((obj) => obj[1] === code);
+        // console.log(`Month ${code} is:`, info);
+
         return info;
     };
 
@@ -47,28 +46,22 @@ const Labels = ({
         const arrayByMonth = [];
         let sortedDatasets = [];
 
-        let monthCodeToSet;
         let r;
         for (r = 0; r < dataset.months.length; r++) {
-            let monthArray = getMonthData(dataset.months[r].code);
-            if (!monthCodeToSet) {
-                // console.log("Setting month code");
-                monthCodeToSet = dataset.months[r].code;
+            let code = dataset.months[r].code;
+            if (code === monthCode) {
+                let monthArray = getMonthData(dataset.months[r].code);
+                arrayByMonth.push(monthArray);
+                sortedDatasets = [...sortedDatasets, ...monthArray];
             }
-            arrayByMonth.push(monthArray);
-            sortedDatasets = [...sortedDatasets, ...monthArray];
         }
 
-        if (!monthCode) {
-            setMonthCode(monthCodeToSet);
-        }
-
+        // console.log("Data set received is", )
         // console.log("Array by month is ", arrayByMonth);
         setSortedData(arrayByMonth);
 
         // const month1 = dataset.months[0].code;
         // getMonthData(month1);
-        // console.log("arrayByMonth is", arrayByMonth);
         // const month1DataSet = month1.
 
         // Good to go.
@@ -85,7 +78,7 @@ const Labels = ({
         //     scaleAllowance
         // );
 
-        const scaleY = d3Functions.scaleYArr(
+        const scaleY = d3Functions.scaleYArrSmall(
             arrayByMonth,
             2,
             canvasHeight,
@@ -100,7 +93,7 @@ const Labels = ({
         //     canvasHeight
         // );
         // console.log("Datsets", dataset.dataSets);
-        // console.log("Array by month", arrayByMonth);
+        // console.log("Array by month TWO IS", sortedDatasets);
 
         svgCanvas
             .selectAll("rect")
@@ -123,7 +116,6 @@ const Labels = ({
                 },
                 height: (data, index) => {
                     return canvasHeight - scaleY(data[2]);
-                    // return scaleY(data);
                 },
             })
             .style("fill", (data, index) => {
@@ -188,7 +180,6 @@ const styles = {
     },
 
     dataContainer: {
-        alignContent: "center",
         textAlign: "center",
         marginLeft: "auto",
         marginRight: "auto",
