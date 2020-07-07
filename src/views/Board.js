@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { Component, useState, useRef, useEffect } from "react";
 import * as d3 from "d3";
+import isEqual from "lodash.isequal";
 
 // Data
 import generalMetadata from "./../assets/datasets/metadata.json";
@@ -8,76 +9,115 @@ import lphMetadata from "./../assets/datasets/orgUnits/lph_metadata.json";
 import lphHeaders from "./../assets/datasets/orgUnits/lph_headers.json";
 import mtshHeaders from "./../assets/datasets/orgUnits/mtsh_headers.json";
 import mtshMetadata from "./../assets/datasets/orgUnits/mtsh_metadata.json";
+import ugandaJson from "../assets/geodata/uganda.json";
 
 // Assets
 import Colors from "./../assets/colors/colors";
+import kpiNames from "./../assets/key_performance_indicators/kpi";
 
 // Hooks
 import useWindowDimensions from "./../hooks/windowDimensions";
 
 // Components
 import IconBtn from "./../components/IconBtn";
+import LegendKey from "./../components/LegendKey";
 
 // Charts
 import LineChart from "./charts/LineChart";
 import BarChart from "./charts/BarChart";
 import PieChart from "./charts/PieChart";
 import BarChartMonthly from "./charts/BarChartMonthly";
+import InteractiveMap from "./charts/InteractiveMap";
 
-const Board = () => {
-    const btn = useRef(null);
-    const usableIcons = [
-        "bar_graph_pretty",
-        "line_plot",
-        "graph",
-        "pie_chart",
-        "africa",
-        "scatter",
-        "graph_and_plot",
-    ];
+const lphObj = {
+    metaInput: lphMetadata,
+    headers: lphHeaders,
+};
+const generalObj = {
+    metaInput: generalMetadata,
+    headers: generalHeaders,
+};
+const mtshObj = {
+    metaInput: mtshMetadata,
+    headers: mtshHeaders,
+};
+const activeDataTypes = {
+    general: ["uganda.0", "district.12", "district.56"],
+    lph: ["district.20", "district.17", "district.43"],
+    mtsh: ["district.4", "district.29", "district.15"],
+};
 
-    const [active, setActive] = useState(usableIcons[0]);
-    const [btnSize, setBtnSize] = useState(30);
-    const [marginSize, setMarginSize] = useState(20);
-    const [monthCode, setMonthCode] = useState("");
-    const { height, width } = useWindowDimensions();
-    const [datasetBar, setDatasetBar] = useState([
-        5,
-        10,
-        13,
-        19,
-        21,
-        25,
-        11,
-        25,
-        22,
-        18,
-        7,
-    ]);
-    const [lphData, setLphData] = useState("");
-    const [mtshData, setMtshData] = useState("");
-    const [generalData, setGeneralData] = useState("");
+class Board extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            height: "",
+            width: "",
+            lphData: "",
+            mtshData: "",
+            generalData: "",
+            chartWidth: "",
+            chartHeight: "",
+            miniChartWidth: "",
+            miniChartHeight: "",
+            mapChartHeight: "",
+            activeData: "",
+            activeKPI: [],
+            monthCode: "",
+            mapJson: "",
+            selectedRegion: "",
+            pieKey: Math.random(),
+            monthlyBarKey: Math.random(),
+            mainBarKey: Math.random(),
+            theme: "dark",
+        };
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    }
 
-    const [datasetLine, setDatasetLine] = useState([
-        { month: 10, sales: 100 },
-        { month: 20, sales: 130 },
-        { month: 30, sales: 250 },
-        { month: 40, sales: 300 },
-        { month: 50, sales: 265 },
-        { month: 60, sales: 225 },
-        { month: 70, sales: 180 },
-        { month: 80, sales: 120 },
-        { month: 90, sales: 145 },
-        { month: 100, sales: 130 },
-    ]);
+    componentDidMount() {
+        // const { height, width } = useWindowDimensions();
 
-    const chartWidth = 0.6 * width;
-    const chartHeight = 0.4 * height;
+        const lphData = this.extractDatasets(lphObj);
+        const mtshData = this.extractDatasets(mtshObj);
+        const generalData = this.extractDatasets(generalObj);
 
-    const miniChartWidth = 0.5 * chartWidth;
-    const miniChartHeight = 0.4 * height;
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
 
-    const extractDatasets = (metaInput, headers) => {
+        this.setState({
+            lphData,
+            mtshData,
+            generalData,
+            mapJson: ugandaJson,
+            activeData: generalData,
+        });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        const chartWidth = 0.6 * width;
+        const chartHeight = 0.4 * height;
+
+        const miniChartWidth = 0.5 * chartWidth;
+        const miniChartHeight = 0.4 * height;
+        const mapChartHeight = 0.85 * height;
+        this.setState({
+            width,
+            height,
+            chartWidth,
+            chartHeight,
+            miniChartWidth,
+            miniChartHeight,
+            mapChartHeight,
+        });
+    };
+
+    extractDatasets({ metaInput, headers }) {
         // X Values and Key Performance Indicators
         const dimensions = metaInput.metaData.dimensions;
         const months = dimensions.pe;
@@ -101,7 +141,7 @@ const Board = () => {
 
         //console.log("kPIValues are", finalKPI);  // the weird id and the name of the key performance indicator
 
-        const singleBarChartWidth = chartWidth / finalX.length; // Subtract padding
+        // const singleBarChartWidth = this.state.chartWidth / finalX.length; // Subtract padding
         return {
             months: finalX,
             kPIValues: finalKPI,
@@ -109,123 +149,258 @@ const Board = () => {
             uids: kPIValues,
             colors: Colors,
         };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log(prevState.activeData);
+        if (
+            !isEqual(
+                prevState.activeData?.dataSets?.[0],
+                this.state.activeData?.dataSets?.[0]
+            )
+        ) {
+            console.log("Component Updated");
+            this.resetKeys();
+        }
+    }
+
+    changeMonthCode = (code) => {
+        //         console.log("Code received is", code);
+        this.setState({ monthCode: code });
+        //     };
     };
 
-    // Create the datasets
-    useEffect(() => {
-        setLphData(extractDatasets(lphMetadata, lphHeaders));
-        setMtshData(extractDatasets(mtshMetadata, mtshHeaders));
-        setGeneralData(extractDatasets(generalMetadata, generalHeaders));
-
-        return () => {};
-    }, []);
-
-    const changeMonthCode = (code) => {
-        console.log("Code received is", code);
-        setMonthCode(code);
+    resetKeys = () => {
+        console.log("Resetting keys");
+        this.setState({
+            pieKey: Math.random(),
+            monthlyBarKey: Math.random(),
+            mainBarKey: Math.random(),
+        });
+        // alert("Done");
     };
 
-    return (
-        <div style={styles.boardContainer}>
-            {/* LEFT */}
-            <div style={styles.leftBoard}>
-                <div
-                    style={{ ...styles.leftTop, ...styles.topPartition }}
-                ></div>
-                <div style={styles.middlePartition}>
-                    {/* Chart Main */}
-                    <div style={styles.chartWrapper}>
-                        {/* <h5 style={styles.titles}>Chart</h5> */}
-                        {/* active === "bar_graph_pretty"
-                            ? */}
-                        {generalData && (
-                            <BarChart
-                                dataset={generalData}
-                                chartWidth={chartWidth}
-                                chartHeight={chartHeight}
-                                monthCode={monthCode}
-                                setMonthCode={setMonthCode}
-                            />
-                        )}
+    handleActiveData = (val) => {
+        console.log(
+            `Val is ${val} and storedval is ${this.state.selectedRegion}`
+        );
+        let newDataObj;
+        if (activeDataTypes.general.includes(val)) {
+            console.log("General");
+            newDataObj = this.state.generalData;
+        }
+        if (activeDataTypes.lph.includes(val)) {
+            console.log("lph");
+            newDataObj = this.state.lphData;
+        }
+        if (activeDataTypes.mtsh.includes(val)) {
+            console.log("mtsh");
+            newDataObj = this.state.mtshData;
+        }
+        this.setState({ selectedRegion: val, activeData: newDataObj });
+        // this.resetKeys();
+    };
+
+    handleActiveKPI = (val) => {
+        // console.log("Val is", val);
+        let newActiveKPI;
+        if (this.state.activeKPI.includes(val)) {
+            newActiveKPI = this.state.activeKPI.filter((item) => item !== val);
+        } else {
+            newActiveKPI = [...this.state.activeKPI, val];
+        }
+
+        this.setState({
+            activeKPI: newActiveKPI,
+        });
+
+        this.resetKeys();
+    };
+
+    toggleTheme = () => {
+        this.setState({
+            theme: this.state.theme === "dark" ? "light" : "dark",
+        });
+    };
+
+    render() {
+        return (
+            <div style={styles.boardContainer}>
+                <div style={{ ...styles.topPartition }}></div>
+                <div style={styles.boardWrapper}>
+                    {/* LEGEND */}
+                    <div style={styles.legend}>
+                        {Object.keys(kpiNames).map((key, index) => {
+                            // let nameID = getKeyByValue(kpiNames, name);
+                            let name = kpiNames[key];
+                            let matchingColor = Colors[key];
+
+                            return (
+                                <LegendKey
+                                    key={Math.random()}
+                                    kpiKey={key}
+                                    kpiName={name}
+                                    radius={10}
+                                    color={matchingColor}
+                                    click={this.handleActiveKPI}
+                                    activeKPI={this.state.activeKPI}
+                                    theme={this.state.theme}
+                                />
+                            );
+                        })}
+
+                        {/* {this.state.activeKPI.length && <button>
+                          </button>} */}
                     </div>
-                </div>
-                <div style={styles.bottomPartition}>
-                    <div style={styles.bottomPartLeft}>
-                        {generalData && monthCode && (
-                            <PieChart
-                                dataset={generalData}
-                                chartWidth={miniChartWidth}
-                                chartHeight={miniChartHeight}
-                                monthCode={monthCode}
-                            />
-                        )}
+                    {/* MIDDLE */}
+                    <div style={styles.leftBoard}>
+                        <div style={styles.middlePartition}>
+                            {/* Chart Main */}
+                            <div style={styles.chartWrapper}>
+                                {/* <h5 style={styles.titles}>Chart</h5> */}
+                                {/* active === "bar_graph_pretty"
+                          ? */}
+                                {this.state.activeData && (
+                                    <BarChart
+                                        dataset={this.state.activeData}
+                                        chartWidth={this.state.chartWidth}
+                                        chartHeight={this.state.chartHeight}
+                                        monthCode={this.state.monthCode}
+                                        setMonthCode={this.changeMonthCode}
+                                        activeKPI={this.state.activeKPI}
+                                        itemKey={this.state.mainBarKey}
+                                        handleActiveKPI={this.handleActiveKPI}
+                                        theme={this.state.theme}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                        <div style={styles.bottomPartition}>
+                            <div style={styles.bottomPartLeft}>
+                                {this.state.activeData &&
+                                    this.state.monthCode && (
+                                        <PieChart
+                                            dataset={this.state.activeData}
+                                            chartWidth={
+                                                this.state.miniChartWidth
+                                            }
+                                            chartHeight={
+                                                this.state.miniChartHeight
+                                            }
+                                            monthCode={this.state.monthCode}
+                                            activeKPI={this.state.activeKPI}
+                                            itemKey={this.state.pieKey}
+                                            handleActiveKPI={
+                                                this.handleActiveKPI
+                                            }
+                                        />
+                                    )}
+                            </div>
+                            <div style={styles.bottomPartRight}>
+                                {this.state.activeData &&
+                                    this.state.monthCode && (
+                                        <BarChartMonthly
+                                            dataset={this.state.activeData}
+                                            chartWidth={
+                                                this.state.miniChartWidth
+                                            }
+                                            chartHeight={
+                                                this.state.miniChartHeight
+                                            }
+                                            monthCode={this.state.monthCode}
+                                            activeKPI={this.state.activeKPI}
+                                            itemKey={this.state.monthlyBarKey}
+                                            handleActiveKPI={
+                                                this.handleActiveKPI
+                                            }
+                                        />
+                                    )}
+                            </div>
+                        </div>
                     </div>
-                    <div style={styles.bottomPartRight}>
-                        {generalData && monthCode && (
-                            <BarChartMonthly
-                                dataset={generalData}
-                                chartWidth={miniChartWidth}
-                                chartHeight={miniChartHeight}
-                                monthCode={monthCode}
-                            />
-                        )}
+
+                    {/* RIGHT */}
+                    <div style={styles.rightBoard}>
+                        <div style={styles.mapPartition}>
+                            {this.state.mapJson && (
+                                <InteractiveMap
+                                    chartWidth={this.state.miniChartWidth}
+                                    chartHeight={this.state.mapChartHeight}
+                                    mapJson={this.state.mapJson}
+                                    selectRegion={this.handleActiveData}
+                                />
+                            )}
+                        </div>
                     </div>
+                    {/* Chart & KPI */}
+                    {/* <div style={styles.chartContainer}>
+             
+
+              <div style={styles.kpiWrapper}>
+                  <h5 style={styles.titles}>KPI</h5>
+              </div>
+          </div> */}
+
+                    {/* Icons */}
+                    {/* <div style={styles.btnContainer}>
+              {usableIcons.map((iconName) => {
+                  return (
+                      <IconBtn
+                          key={Math.random()}
+                          size={btnSize}
+                          margin={marginSize}
+                          icon={iconName}
+                          bw={active !== iconName}
+                          onClick={() => {
+                              // logData();
+                              setActive(iconName);
+                          }}
+                      />
+                  );
+              })}
+          </div> */}
                 </div>
             </div>
+        );
+    }
+}
 
-            {/* RIGHT */}
-            <div style={styles.rightBoard}>
-                <div
-                    style={{ ...styles.rightTop, ...styles.topPartition }}
-                ></div>
-                <div style={styles.mapPartition}></div>
-            </div>
-            {/* Chart & KPI */}
-            {/* <div style={styles.chartContainer}>
-               
+// export default Board;
 
-                <div style={styles.kpiWrapper}>
-                    <h5 style={styles.titles}>KPI</h5>
-                </div>
-            </div> */}
-
-            {/* Icons */}
-            {/* <div style={styles.btnContainer}>
-                {usableIcons.map((iconName) => {
-                    return (
-                        <IconBtn
-                            key={Math.random()}
-                            size={btnSize}
-                            margin={marginSize}
-                            icon={iconName}
-                            bw={active !== iconName}
-                            onClick={() => {
-                                // logData();
-                                setActive(iconName);
-                            }}
-                        />
-                    );
-                })}
-            </div> */}
-        </div>
-    );
-};
 const dark = false;
 const themeColor = dark ? "#fff" : "#1a1b1d";
 const borderThickness = "2.5px";
 const styles = {
     boardContainer: {
         display: "flex",
-        flexDirection: "row",
-        width: "95vw",
-        height: "95vh",
+        flexDirection: "column",
+        width: "98vw",
+        height: "98vh",
         margin: "auto auto auto auto",
+    },
+
+    boardWrapper: {
+        flex: 10,
+        display: "flex",
+        flexDirection: "row",
+    },
+    legend: {
+        flex: 1,
+        borderRight: `${borderThickness} solid ${themeColor}`,
+        padding: 5,
+    },
+    legendKey: {
+        display: "flex",
+        justifyContent: "flex-start",
+        fontSize: 11,
+        textAlign: "left",
+        marginBottom: 3,
     },
 
     leftBoard: {
         // border: `${borderThickness} solid ${themeColor}`,
         borderRight: `${borderThickness} solid ${themeColor}`,
-        flex: 8,
+        flex: 7,
         display: "flex",
         flexDirection: "column",
     },
@@ -233,7 +408,7 @@ const styles = {
         // borderRight: `${borderThickness} solid ${themeColor}`,
         // borderTop: `${borderThickness} solid ${themeColor}`,
         // borderBottom: `${borderThickness} solid ${themeColor}`,
-        flex: 4,
+        flex: 5,
         display: "flex",
         flexDirection: "column",
     },

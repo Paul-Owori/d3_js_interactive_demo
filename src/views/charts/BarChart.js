@@ -3,18 +3,24 @@ import "d3-selection-multi";
 import * as d3 from "d3";
 import * as d3Functions from "./../../utilities/d3Functions";
 
-const Labels = ({
+const BarChart = ({
     chartWidth,
     chartHeight,
     dataset,
     monthCode,
     setMonthCode,
+    activeKPI,
+    itemKey,
+    handleActiveKPI,
+    theme,
 }) => {
     const barChartRef = useRef(null);
     const scaleAllowance = 0;
     const [sortedData, setSortedData] = useState("");
+    const fadedOpacity = 0.2;
 
     // Svg
+    const [initialRenderDone, setInitialRenderDone] = useState(false);
     const canvasWidth = 0.9 * chartWidth;
     const canvasHeight = 0.9 * chartHeight;
     const padding = 2;
@@ -35,15 +41,7 @@ const Labels = ({
         return info;
     };
 
-    useEffect(() => {
-        // Construct data for one month.
-        // Display it
-        // Build a function that loops through each month and appends a new svg
-        // Append them horizontally, ie use flex
-        // Build legends
-        // Build a map
-        // Make the map responsive
-
+    const renderBars = () => {
         const arrayByMonth = [];
         let sortedDatasets = [];
 
@@ -66,24 +64,12 @@ const Labels = ({
         // console.log("Array by month is ", arrayByMonth);
         setSortedData(arrayByMonth);
 
-        // const month1 = dataset.months[0].code;
-        // getMonthData(month1);
-        // console.log("arrayByMonth is", arrayByMonth);
-        // const month1DataSet = month1.
-
         // Good to go.
         const svgCanvas = d3
             .select(barChartRef.current)
             .append("svg")
             .attr("width", canvasWidth)
             .attr("height", canvasHeight);
-
-        // const scaleX = d3Functions.scaleX(
-        //     dataset,
-        //     null,
-        //     canvasWidth,
-        //     scaleAllowance
-        // );
 
         const scaleY = d3Functions.scaleYArr(
             arrayByMonth,
@@ -93,21 +79,28 @@ const Labels = ({
             // 0
         );
 
-        // console.log(
-        //     "ScaleY 13 is",
-        //     scaleY(13),
-        //     "Canvas height is",
-        //     canvasHeight
-        // );
-        // console.log("Datsets", dataset.dataSets);
-        // console.log("Array by month", arrayByMonth);
-
         svgCanvas
             .selectAll("rect")
             .data(sortedDatasets)
             .enter()
             .append("rect")
             .attrs({
+                opacity: (data, index) => {
+                    if (
+                        activeKPI &&
+                        activeKPI.length &&
+                        !activeKPI.includes(data[0])
+                    ) {
+                        // console.log("Not included");
+                        return fadedOpacity;
+                    } else {
+                        // console.log(
+                        //     "activeKPI.includes(data[0])",
+                        //     activeKPI.includes(data[0])
+                        // );
+                        return 1;
+                    }
+                },
                 x: (data, index) => {
                     const length = arrayByMonth.length * arrayByMonth[0].length;
                     // console.log("Data is", length);
@@ -126,53 +119,125 @@ const Labels = ({
                     // return scaleY(data);
                 },
             })
+            .on("mouseover", function (d) {
+                // make all bars opaque
+                if (!activeKPI.length) {
+                    fade(fadedOpacity, d);
+                }
+            })
+            .on("mouseout", function (d) {
+                if (!activeKPI.length) {
+                    fade(1, d);
+                }
+            })
+            .on("click", function (d) {
+                if (d) {
+                    // console.log("D IS", d[0]);
+                    handleActiveKPI(d[0]);
+                }
+            })
             .style("fill", (data, index) => {
                 return colorPicker(dataset.colors, data[0]);
             });
 
-        // Apply labels
-        // svgCanvas
-        //     .selectAll("text")
-        //     .data(dataset)
-        //     .enter()
-        //     .append("text")
-        //     .text((data, index) => {
-        //         return data;
-        //     })
-        //     .attrs({
-        //         "text-anchor": "middle",
-        //         x: (data, index) => {
-        //             return (
-        //                 (canvasWidth / dataset.length - padding) / 2 +
-        //                 (index * canvasWidth) / dataset.length
-        //             );
-        //         },
-        //         // value above the bar
-        //         // y: (data, index) => {
-        //         //     return canvasHeight - data * 4 - 4;
-        //         // },
+        const fade = (opacity, d) => {
+            // console.log("CANVAS IS", canvas);
+            svgCanvas
+                .selectAll("rect")
+                // .data(sortedData)
+                // .enter()
+                .filter(function (item) {
+                    if (d && item) {
+                        return item[0] !== d[0];
+                    }
+                })
+                .transition()
+                .style("opacity", opacity);
+        };
 
-        //         // value below the bar
-        //         y: (data, index) => {
-        //             const position = scaleY(data) + textVerticalPadding;
-        //             return position < canvasHeight
-        //                 ? position
-        //                 : canvasHeight - padding;
-        //         },
-        //         "font-size": 20,
-        //         // Color matches bar
-        //         // fill: (data, index) => {
-        //         //     return colorPicker(data);
-        //         // },
+        svgCanvas
+            .selectAll("text")
+            .data(sortedDatasets)
+            .enter()
+            .append("text")
+            .text((data, index) => {
+                return data[2];
+            })
+            .attrs({
+                "text-anchor": "right",
+                opacity: (data, index) => {
+                    if (
+                        activeKPI &&
+                        activeKPI.length &&
+                        !activeKPI.includes(data[0])
+                    ) {
+                        return 0;
+                    } else if (
+                        activeKPI &&
+                        activeKPI.length &&
+                        activeKPI.includes(data[0])
+                    ) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                },
+                x: (data, index) => {
+                    // const length = arrayByMonth.length * arrayByMonth[0].length;
+                    // // console.log("Data is", length);
+                    // return index * (canvasWidth / length);
 
-        //         // Color is white
-        //         fill: "#fff",
-        //     });
+                    const length = arrayByMonth.length * arrayByMonth[0].length;
+                    let startOfBar = index * (canvasWidth / length);
+                    let barWidth = canvasWidth / length - padding;
+
+                    return startOfBar + 0.5 * barWidth;
+                },
+
+                // value below the bar
+                y: (data, index) => {
+                    let position = scaleY(data[2]) + textVerticalPadding;
+
+                    return position < canvasHeight
+                        ? position
+                        : canvasHeight - padding;
+                },
+                "font-size": (data, index) => {
+                    const length = arrayByMonth.length * arrayByMonth[0].length;
+
+                    let barWidth = canvasWidth / length - padding;
+
+                    return 8 * barWidth;
+                },
+                "font-weight": "bold",
+
+                fill: (data, index) => {
+                    if (theme === "dark") {
+                        return "#fff";
+                    } else {
+                        return "#292c34";
+                    }
+                },
+            });
+    };
+
+    useEffect(() => {
+        renderBars();
+        setInitialRenderDone(true);
         return () => {};
     }, []);
 
+    useEffect(() => {
+        if (!initialRenderDone) {
+            return;
+        }
+        renderBars();
+        return () => {};
+    }, [itemKey]);
+
     return (
         <div
+            key={itemKey}
             style={{ ...styles.dataContainer, width: "100%" }}
             ref={barChartRef}
         >
@@ -209,4 +274,4 @@ const constants = {
     },
 };
 
-export default Labels;
+export default BarChart;

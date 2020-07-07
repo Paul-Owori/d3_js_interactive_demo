@@ -241,3 +241,47 @@ export const scaleYArrSmall = (dataSet, column, maxHeight, allowance) => {
     }
     return scale;
 };
+
+export const scaleUpMapPart1 = (mapToUse, canvasHeight, canvasWidth) => {
+    let centerMap = d3.geoCentroid(mapToUse);
+    let scale = 150;
+    let offset = [canvasWidth / 2, canvasHeight / 2];
+
+    let mapProjection = d3
+        .geoMercator()
+        .scale(scale)
+        .center(centerMap)
+        .translate(offset);
+    let firstPath = d3.geoPath().projection(mapProjection);
+    return firstPath;
+};
+
+export const scaleUpMapPart2 = (
+    mapToUse,
+    canvasHeight,
+    canvasWidth,
+    firstPath,
+    oldScale,
+    oldOffset,
+    centerMap
+) => {
+    // using the first path determine the bounds of the current map and use
+    // these to determine better values for the scale and translation
+    let bounds = firstPath.bounds(mapToUse);
+    let hScale = (oldScale * canvasWidth) / (bounds[1][0] - bounds[0][0]);
+    let vScale = (oldScale * canvasHeight) / (bounds[1][1] - bounds[0][1]);
+    oldScale = hScale < vScale ? hScale : vScale;
+    oldOffset = [
+        canvasWidth - (bounds[0][0] + bounds[1][0]) / 2,
+        canvasHeight - (bounds[0][1] + bounds[1][1]) / 2,
+    ];
+
+    // new projection
+    let mapProjection = d3
+        .geoMercator()
+        .center(centerMap)
+        .scale(oldScale)
+        .translate(oldOffset);
+    let finalPath = firstPath.projection(mapProjection);
+    return finalPath;
+};

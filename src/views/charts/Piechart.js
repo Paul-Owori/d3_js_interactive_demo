@@ -3,10 +3,19 @@ import "d3-selection-multi";
 import * as d3 from "d3";
 import * as d3Functions from "../../utilities/d3Functions";
 
-const Labels = ({ chartWidth, chartHeight, dataset, monthCode }) => {
+const PieChart = ({
+    chartWidth,
+    chartHeight,
+    dataset,
+    monthCode,
+    activeKPI,
+    itemKey,
+    handleActiveKPI,
+}) => {
     const barChartRef = useRef(null);
     const scaleAllowance = 1;
     const [sortedData, setSortedData] = useState("");
+    const [initialRenderDone, setInitialRenderDone] = useState(false);
 
     // Svg
     const canvasWidth = 0.9 * chartWidth;
@@ -28,15 +37,11 @@ const Labels = ({ chartWidth, chartHeight, dataset, monthCode }) => {
         return info;
     };
 
-    useEffect(() => {
-        // Construct data for one month.
-        // Display it
-        // Build a function that loops through each month and appends a new svg
-        // Append them horizontally, ie use flex
-        // Build legends
-        // Build a map
-        // Make the map responsive
+    const getSegmentName = (id) => {
+        return dataset.kPIValues.find((obj) => obj.uid === id).name;
+    };
 
+    const renderPI = () => {
         const arrayByMonth = [];
         let sortedDatasets = [];
 
@@ -50,15 +55,8 @@ const Labels = ({ chartWidth, chartHeight, dataset, monthCode }) => {
             }
         }
 
-        // console.log("Data set received is", )
-        // console.log("Array by month is ", arrayByMonth);
         setSortedData(arrayByMonth);
 
-        // const month1 = dataset.months[0].code;
-        // getMonthData(month1);
-        // const month1DataSet = month1.
-
-        // Good to go.
         const svgCanvas = d3
             .select(barChartRef.current)
             .append("svg")
@@ -69,14 +67,35 @@ const Labels = ({ chartWidth, chartHeight, dataset, monthCode }) => {
             .pie()
             .sort(null)
             .value((dataObj) => {
-                // console.log("dataObj is", dataObj[2]);
                 return dataObj[2];
             })(sortedDatasets);
 
+        const innerRadiusNum = canvasHeight / 25;
+        const outerRadiusNum = canvasHeight / 2.6;
+        const expandedInnerRadius = innerRadiusNum + 0.2 * innerRadiusNum;
+        const expandedOuterRadius = outerRadiusNum + 0.2 * outerRadiusNum;
+
+        const onArcHover = d3
+            .arc()
+            .innerRadius(expandedInnerRadius)
+            .outerRadius(expandedOuterRadius);
+
         const pieSegments = d3
             .arc()
-            .innerRadius(canvasHeight / 20)
-            .outerRadius(canvasHeight / 2.2)
+            .innerRadius((d) => {
+                if (activeKPI.includes(d.data[0])) {
+                    return expandedInnerRadius;
+                } else {
+                    return innerRadiusNum;
+                }
+            })
+            .outerRadius((d) => {
+                if (activeKPI.includes(d.data[0])) {
+                    return expandedOuterRadius;
+                } else {
+                    return outerRadiusNum;
+                }
+            })
             .padAngle(0.05)
             .padRadius(50);
 
@@ -94,28 +113,57 @@ const Labels = ({ chartWidth, chartHeight, dataset, monthCode }) => {
             .append("path")
             .attrs({
                 d: pieSegments,
-                // fill: (data) => colorPicker(dataset.colors, data[0]),
             })
             .style("fill", (data, index) => {
-                console.log("data is ", data);
                 return colorPicker(dataset.colors, data.data[0]);
+            })
+            .on("mouseover", function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("d", onArcHover);
+            })
+            .on("mouseout", function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("d", pieSegments);
+            })
+            .on("click", (d) => {
+                handleActiveKPI(d.data[0]);
+                // console.log("DDDD ISSS", d);
+            })
+            .append("title")
+            .text((d) => {
+                // console.log("d is", dataset);
+                const id = d.data[0];
+                const val = d.data[2];
+                const actualName = getSegmentName(id);
+                return `[${val}] : ${actualName}`;
             });
-        // console.log("PIEDATA IS", pieData);
-        const scaleY = d3Functions.scaleYArrSmall(
-            arrayByMonth,
-            2,
-            canvasHeight,
-            scaleAllowance
-            // 0
-        );
 
+        const content = d3.select("g").selectAll("text").data(sortedDatasets);
+    };
+
+    useEffect(() => {
+        renderPI();
+        setInitialRenderDone(true);
         return () => {};
     }, []);
+
+    useEffect(() => {
+        if (!initialRenderDone) {
+            return;
+        }
+        renderPI();
+        return () => {};
+    }, [itemKey]);
 
     return (
         <div
             style={{ ...styles.dataContainer, width: "100%" }}
             ref={barChartRef}
+            key={itemKey}
         >
             {/* <h3 style={styles.h3s}>Applying labels to data</h3> */}
         </div>
@@ -149,4 +197,4 @@ const constants = {
     },
 };
 
-export default Labels;
+export default PieChart;
