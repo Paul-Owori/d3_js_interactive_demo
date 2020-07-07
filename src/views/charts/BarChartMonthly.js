@@ -241,7 +241,9 @@ const BarChartMonthly = ({
             style={{ ...styles.dataContainer, width: "100%" }}
             ref={barChartRef}
         >
-            <h6>Number of doses per Key Performance Indicator in a month</h6>
+            <h6 style={{ margin: "0rem" }}>
+                Number of doses per Key Performance Indicator in a month
+            </h6>
             {/* <h3 style={styles.h3s}>Applying labels to data</h3> */}
         </div>
     );

@@ -165,7 +165,9 @@ const PieChart = ({
             ref={barChartRef}
             key={itemKey}
         >
-            {/* <h3 style={styles.h3s}>Applying labels to data</h3> */}
+            <h6 style={{ margin: "0rem" }}>
+                Number of doses per Key Performance Indicator in a month
+            </h6>{" "}
         </div>
     );
 };
