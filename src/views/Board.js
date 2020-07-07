@@ -25,7 +25,7 @@ import LegendKey from "./../components/LegendKey";
 // Charts
 import LineChart from "./charts/LineChart";
 import BarChart from "./charts/BarChart";
-import PieChart from "./charts/PieChart";
+import PieChart from "./charts/Piechart";
 import BarChartMonthly from "./charts/BarChartMonthly";
 import InteractiveMap from "./charts/InteractiveMap";
 
