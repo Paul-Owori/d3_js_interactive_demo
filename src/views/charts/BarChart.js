@@ -241,6 +241,7 @@ const BarChart = ({
             style={{ ...styles.dataContainer, width: "100%" }}
             ref={barChartRef}
         >
+            <h6>Number of doses per district</h6>
             {/* <h3 style={styles.h3s}>Applying labels to data</h3> */}
         </div>
     );

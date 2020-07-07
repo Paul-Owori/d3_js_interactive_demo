@@ -313,7 +313,9 @@ const InteractiveMap = ({
             ref={mapRef}
         >
             <p ref={tempStore} style={styles.tempStore}></p>
-            {/* <h3 style={styles.h3s}>Applying labels to data</h3> */}
+            <h3 style={styles.h3s}>
+                Distribution of Immunisation doses countrywide
+            </h3>
         </div>
     );
 };

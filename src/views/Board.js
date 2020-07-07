@@ -25,7 +25,7 @@ import LegendKey from "./../components/LegendKey";
 // Charts
 import LineChart from "./charts/LineChart";
 import BarChart from "./charts/BarChart";
-import PieChart from "./charts/Piechart";
+import PieChart from "./charts/PieChart";
 import BarChartMonthly from "./charts/BarChartMonthly";
 import InteractiveMap from "./charts/InteractiveMap";
 
@@ -230,6 +230,7 @@ class Board extends Component {
                 <div style={styles.boardWrapper}>
                     {/* LEGEND */}
                     <div style={styles.legend}>
+                        <p>Legend</p>
                         {Object.keys(kpiNames).map((key, index) => {
                             // let nameID = getKeyByValue(kpiNames, name);
                             let name = kpiNames[key];
